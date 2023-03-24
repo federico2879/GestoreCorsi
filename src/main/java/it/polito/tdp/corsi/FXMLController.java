@@ -5,7 +5,12 @@
 package it.polito.tdp.corsi;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.corsi.db.CorsoDAO;
+import it.polito.tdp.corsi.db.StudenteDAO;
+import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,20 +52,38 @@ public class FXMLController {
     @FXML
     void corsiPerPeriodo(ActionEvent event) {
     	
+    	CorsoDAO daoC = new CorsoDAO();
+    	//int prova = this.txtPeriodo.getText()
+    	List<Corso> corsi = daoC.listCorsiPd(Integer.parseInt(""+this.txtPeriodo.getText()));
+    	this.txtRisultato.setText(model.stampaCorsi(corsi));
+    	
     }
 
     @FXML
     void numeroStudenti(ActionEvent event) {
     	
+    	StudenteDAO daoS = new StudenteDAO();
+    	this.txtRisultato.setText(""+daoS.numeroStudentiPd(Integer.parseInt(""+this.txtPeriodo.getText())));
+    	
     }
 
     @FXML
     void stampaDivisione(ActionEvent event) {
+    	
+    	StudenteDAO daoS = new StudenteDAO();
+    	String corso = this.txtCorso.getText();
+    	this.txtRisultato.setText(model.stampaStudenti(model.distinguiCDS(daoS.studentiPerCorso(corso))));
+    	
 
     }
 
     @FXML
     void stampaStudenti(ActionEvent event) {
+    	
+    	StudenteDAO daoS = new StudenteDAO();
+    	String corso = this.txtCorso.getText();
+    	this.txtRisultato.setText(model.stampaStudenti(daoS.studentiPerCorso(corso)));
+    	
 
     }
 
